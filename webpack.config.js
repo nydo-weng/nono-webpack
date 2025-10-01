@@ -4,11 +4,13 @@
 
 // 引入 Eslint 插件
 const eslintplugin = require("eslint-webpack-plugin");
+const minicss = require("mini-css-extract-plugin");
+const minimizer = require("css-minimizer-webpack-plugin");
 module.exports = {
   // 指定是生产还是开发
   // 生产 production: 会简化, 会压缩 (webpack3 中要自己写)
   // 开发 development: 没有压缩和简化
-  mode: "development", // none, development, production
+  mode: "production", // none, development, production
   optimization: {},
 
   // 单入口
@@ -58,6 +60,52 @@ module.exports = {
           // options: {}, 这个不写, 写到 .babelrc 中
         },
       },
+      {
+        test: /\.css/,
+        // 让 webpack 认识 css, 然后插入 js
+        // use: ["style-loader", "css-loader"],
+        use: [minicss.loader, "css-loader"],
+      },
+      {
+        test: /\.less/,
+        use: [minicss.loader, "css-loader", "less-loader"],
+      },
+      // 这是 webpac 3 4 的 loader
+      // {
+      //   test: /\.(jpg|jpeg|png|gif|svg)$/,
+      //   loader: "url-loader", // 加上转码的功能
+      //   options: {
+      //     // 把图片转换成 base64 不一定是好的, 只是不用发请求了, 但是体积还在那
+      //     // 大图转成 base64 放在 js 里, js 文件会大很多, 会降低首屏加载
+      //     limit: 5000, // 小于 0. 就转, 小于 多少就转成 base64, 一般小于 5kb 才转
+      //     // 本命+hash.后缀
+      //     name: "[name].[hash].[ext]",
+      //   },
+      // },
+      // webpack 5
+      {
+        test: /\.(jpg|jpeg|png|gif|svg)$/,
+        type: "asset", // asset 设置转 / inline-asset 都转, resource 都拎成单个
+        parser: {
+          dataUrlCondition: {
+            maxSize: 5000, // 小于 5000 才转
+          },
+        },
+        generator: {
+          filename: "[name].[hash].[ext]",
+        },
+      },
+      {
+        test: /\.mp3$/,
+        loader: "url-loader", // 加上转码的功能
+        options: {
+          // 把图片转换成 base64 不一定是好的, 只是不用发请求了, 但是体积还在那
+          // 大图转成 base64 放在 js 里, js 文件会大很多, 会降低首屏加载
+          limit: 5000, // 小于 0. 就转, 小于 多少就转成 base64, 一般小于 5kb 才转
+          // 本命+hash.后缀
+          name: "[name].[hash].[ext]",
+        },
+      },
     ],
   },
   // 插件, 注意这是 list, module 是对象
@@ -65,6 +113,10 @@ module.exports = {
     // new eslintplugin({
     //   // 可以直接在这里定义规范, 但是会很多, 导致文件臃肿
     // })
-    new eslintplugin(),
+    // new eslintplugin(),
+    new minicss({
+      filename: "test.bundle.css",
+    }),
+    new minimizer(),
   ],
 };

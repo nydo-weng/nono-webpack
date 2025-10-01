@@ -10,7 +10,7 @@ module.exports = {
   // eslint-config-standard
   // eslint-config-airbnb
   // 这个规范也需要安装, 比如 npm eslint-config-standard --save-dev
-  extends: ["standard", "plugin: vue:strongly-recommended"],
+  extends: ["standard", "plugin:vue/strongly-recommended"],
   // 插件
   // 提供特殊语法的支持
   // 比如 vue 有自己的特殊风格, 这个在 eslint 本身的规则里没有, 插件可以提供额外的规则 并提供一套现成的规范
