@@ -6,11 +6,12 @@
 const eslintplugin = require("eslint-webpack-plugin");
 const minicss = require("mini-css-extract-plugin");
 const minimizer = require("css-minimizer-webpack-plugin");
+const htmlwebpackplugin = require("html-webpack-plugin");
 module.exports = {
   // 指定是生产还是开发
   // 生产 production: 会简化, 会压缩 (webpack3 中要自己写)
   // 开发 development: 没有压缩和简化
-  mode: "production", // none, development, production
+  mode: "development", // none, development, production
   optimization: {},
 
   // 单入口
@@ -26,6 +27,7 @@ module.exports = {
   // 推荐, 直接写为一个对象
   entry: {
     app: "./app.js",
+    app2: "./app2.js",
   },
 
   output: {
@@ -64,7 +66,7 @@ module.exports = {
         test: /\.css/,
         // 让 webpack 认识 css, 然后插入 js
         // use: ["style-loader", "css-loader"],
-        use: [minicss.loader, "css-loader"],
+        use: [minicss.loader, "css-loader", "./mycss-loader"],
       },
       {
         test: /\.less/,
@@ -118,5 +120,37 @@ module.exports = {
       filename: "test.bundle.css",
     }),
     new minimizer(),
+    new htmlwebpackplugin({
+      // 指定两个基础配置
+      // 1. 模版是哪个
+      template: "./index.html",
+      // 也可以用
+      // templateContent: function(){
+      //   return "<div>123</div>"
+      // }
+      //  2. 处理出来的 html 叫什么名字
+      filename: "index.html",
+      chunks: ["app"],
+      // 压缩相关配置
+      minify: {
+        collapseWhitespace: false, // 是否压缩成一行
+        removeComments: false,
+        removeAttributeQuotes: false,
+      },
+      // 指定插入的 JS 插入的位置
+      inject: "body", // body|true(加入 body), head, false(完全不加入)
+      title: "hello",
+      arr: [{ title: "div1" }, { title: "div1" }, { title: "div1" }],
+    }),
+    // 第二个入口
+    new htmlwebpackplugin({
+      template: "./index2.html",
+      filename: "index2.html",
+      chunks: ["app2"],
+      inject: "body",
+    }),
   ],
 };
+// 多入口, 意味着多个页面
+/* 多入口 - 多个 html, 切换页面时, 切到了另一个 html
+多入口每个 html 应该有自己的 js */

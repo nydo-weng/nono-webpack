@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= htmlWebpackPlugin.options.title%></title>
+  </head>
+  <body>
+    <!-- 这个名字和在 webpack 插件引入时的变量名没关系, 要用驼峰-->
+    <% htmlWebpackPlugin.options.arr.forEach(function(item){%>
+    <div><%= item.title %></div>
+    <%})%>
+    <div id="app">this is index1</div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
