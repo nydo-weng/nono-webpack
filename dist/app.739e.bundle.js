@@ -1,0 +1,1 @@
+(()=>{"use strict";console.log(3),app.js,console.log(4),console.log(23)})();
