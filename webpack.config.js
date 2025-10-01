@@ -12,7 +12,36 @@ module.exports = {
   // 生产 production: 会简化, 会压缩 (webpack3 中要自己写)
   // 开发 development: 没有压缩和简化
   mode: "development", // none, development, production
-  optimization: {},
+  // 一般配的很少, 但是代码分割在这里额外配置
+  optimization: {
+    splitChunks: {
+      // chunks: "all", // all(不管同步异步,都进行拆分), async(只拆分异步, import 的部分), initial(只拆分同步)
+      // minChunks: 2, // 一个模块重复引用了几次, 才拆分为独立的 chunk/文件, 2 次或者以上
+      // minSize: 0, // 最小拆分量, 大于多少, 才拆分, 不然浪费 http 请求, 1000 -> 大于 1000byte 的文件
+      // name: "a", // 指定名字
+      cacheGroups: {
+        // 特殊需求, 都用 cacheGroup
+        vendor: {
+          // 第三方代码
+          test: /[\\/]node_modules[\\/]/,
+          filename: "vendor.js",
+          chunks: "all",
+          minChunks: 1,
+        },
+        common: {
+          // 非第三方模块的公用模块, 业务代码
+          filename: "common.js",
+          chunks: "all",
+          minChunks: 2,
+          minSize: 0,
+        },
+      },
+    },
+    runtimeChunk: {
+      name: "runtime.js",
+    },
+  },
+  // 第三方库单独打包-vendor, runtime (单入口多入口通用)
 
   // 单入口
   // entry: ["./app.js", "./app2.js"]  两个文件同时作为一个入口
