@@ -15,7 +15,7 @@
   \**************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar b = 3;\nconsole.log(b);\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (b + 1);\n\n//# sourceURL=webpack://nono-webpack/./a.js?\n}");
+eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar b = 3;\nconsole.log(b);\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (b + 3);\n\n//# sourceURL=webpack://nono-webpack/./a.js?\n}");
 
 /***/ })
 

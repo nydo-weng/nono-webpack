@@ -24,13 +24,13 @@ module.exports = {
         vendor: {
           // 第三方代码
           test: /[\\/]node_modules[\\/]/,
-          filename: "vendor.js",
+          filename: "vendor.[chunkhash:4].js",
           chunks: "all",
           minChunks: 1,
         },
         common: {
           // 非第三方模块的公用模块, 业务代码
-          filename: "common.js",
+          filename: "common.[chunkhash:4].js",
           chunks: "all",
           minChunks: 2,
           minSize: 0,
@@ -66,10 +66,15 @@ module.exports = {
     // 可以直接写死, 但是多入口的时候会互相顶掉, 所以加上[name], 这是入口名
     // 还可以加上 [hash] 值, 每次打包之后, 如果打包内容没有改变, 这个值也不会变
     // :4 截取 hash 值前四位
-    filename: "[name].[hash:4].bundle.js",
+    filename: "[name].[chunkhash:4].bundle.js",
   },
   devServer: {},
-  resolve: {},
+  resolve: {
+    alias: {
+      "@css": "/css",
+    },
+    extensions: [".js", ".css", ".json"],
+  },
 
   // loader
   module: {
@@ -123,7 +128,7 @@ module.exports = {
           },
         },
         generator: {
-          filename: "[name].[hash].[ext]",
+          filename: "[name].[chunkhash].[ext]",
         },
       },
       {
@@ -134,7 +139,7 @@ module.exports = {
           // 大图转成 base64 放在 js 里, js 文件会大很多, 会降低首屏加载
           limit: 5000, // 小于 0. 就转, 小于 多少就转成 base64, 一般小于 5kb 才转
           // 本命+hash.后缀
-          name: "[name].[hash].[ext]",
+          name: "[name].[chunkhash].[ext]",
         },
       },
     ],
