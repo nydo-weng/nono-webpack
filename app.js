@@ -1,5 +1,3 @@
-app.js;
-
 import b from "./a.js";
 (() => {
   let a = 23;

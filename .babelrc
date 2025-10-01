@@ -1,0 +1,9 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      // 占有率大于 1%, 最后两个版本, 不小于 ie<=8 版本, 这个版本常在.babelrc 中
+      { "targets": { "browsers": [">1%", "last 2 versions", "not ie<=8"] } }
+    ]
+  ]
+}

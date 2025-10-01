@@ -2,6 +2,8 @@
 // 基于 node 语法, commonjs,
 // es6 的语法, 不认识
 
+// 引入 Eslint 插件
+const eslintplugin = require("eslint-webpack-plugin");
 module.exports = {
   // 指定是生产还是开发
   // 生产 production: 会简化, 会压缩 (webpack3 中要自己写)
@@ -34,7 +36,7 @@ module.exports = {
     filename: "[name].[hash:4].bundle.js",
   },
   devServer: {},
-  resovle: {},
+  resolve: {},
 
   // loader
   module: {
@@ -44,8 +46,25 @@ module.exports = {
       //   test: /\.js/, // 处理什么文件
       //   loader: "babel-loader",
       // },
+      {
+        test: /\.js$/,
+        // loader: "babel-loader",  不用配置时可以这样, 或者用 use 跟 数组
+        // use 跟数组的话, 就是这个类型的文件要用多个 loader, 从数组的 从后往前 依次处理
+        // 如果要配置, 跟对象,
+        // use 跟对象的话, 就可以跟配置, 如果不给配置, 不会把 es6 编译到 es5, 只是打包
+        use: {
+          loader: "babel-loader",
+          // preset -> @babel/preset-env, 指定编译规范
+          // options: {}, 这个不写, 写到 .babelrc 中
+        },
+      },
     ],
   },
   // 插件, 注意这是 list, module 是对象
-  plugins: [],
+  plugins: [
+    // new eslintplugin({
+    //   // 可以直接在这里定义规范, 但是会很多, 导致文件臃肿
+    // })
+    new eslintplugin(),
+  ],
 };
